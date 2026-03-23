@@ -2,11 +2,21 @@ pub mod vm;
 
 use vm::*;
 
-use crate::vm::register::Register;
+use crate::vm::instruction::{Instruction, Opcode};
 
 fn main() {
-    let mut vm = VM::default();
+    let ins = Instruction::new(Opcode::PrintReg);
 
-    vm.set_register(Register::G0, 2);
-    println!("{}", vm.get_register(Register::G0));
+    let test: Instruction;
+    match Instruction::decoded(ins.packed()) {
+        Ok(v) => test = v,
+        Err(e) => {
+            println!("Error: {:?}", e);
+            return;
+        }
+    }
+
+    println!("{:?}", test);
+    println!("ORIGINAL {:?}", ins);
+    println!("PACKED: {:#010x}", test.packed());
 }

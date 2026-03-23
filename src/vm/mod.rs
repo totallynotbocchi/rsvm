@@ -2,6 +2,7 @@ use crate::vm::{register::Register, stack::Stack};
 use strum::EnumCount;
 
 pub mod error;
+pub mod instruction;
 pub mod register;
 pub mod stack;
 
