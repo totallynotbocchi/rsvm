@@ -2,19 +2,11 @@ pub mod vm;
 
 use vm::*;
 
+use crate::vm::register::Register;
+
 fn main() {
-    let mut s = stack::Stack::new(1);
+    let mut vm = VM::default();
 
-    if let Err(_) = s.push(2) {
-        println!("Failed to add 2");
-    }
-
-    if let Err(_) = s.push(3) {
-        println!("Failed to add 3");
-    }
-
-    match s.pop() {
-        Ok(v) => println!("{}", v),
-        Err(err) => println!("{:?}", err),
-    };
+    vm.set_register(Register::G0, 2);
+    println!("{}", vm.get_register(Register::G0));
 }

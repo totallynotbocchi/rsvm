@@ -2,12 +2,12 @@ use crate::error::Error;
 
 pub struct Stack {
     data: Vec<i32>,
-    capacity: i32,
-    ptr: i32,
+    capacity: usize,
+    ptr: usize,
 }
 
 impl Stack {
-    pub fn new(capacity: i32) -> Self {
+    pub fn new(capacity: usize) -> Self {
         Self {
             data: vec![],
             capacity,
