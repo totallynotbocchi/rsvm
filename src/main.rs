@@ -2,21 +2,17 @@ pub mod vm;
 
 use vm::*;
 
-use crate::vm::instruction::{Instruction, Opcode};
+use crate::vm::{
+    cpu::CPU,
+    instruction::{Instruction, Opcode},
+};
 
 fn main() {
+    let cpu = CPU::default();
     let ins = Instruction::new(Opcode::PrintReg);
 
-    let test: Instruction;
-    match Instruction::decoded(ins.packed()) {
-        Ok(v) => test = v,
-        Err(e) => {
-            println!("Error: {:?}", e);
-            return;
-        }
+    match cpu.execute(ins) {
+        Ok(()) => {}
+        Err(e) => eprintln!("Error: {:?}", e),
     }
-
-    println!("{:?}", test);
-    println!("ORIGINAL {:?}", ins);
-    println!("PACKED: {:#010x}", test.packed());
 }

@@ -1,7 +1,9 @@
 use strum::EnumCount as _;
 use strum_macros::EnumCount;
 
-#[derive(Debug, EnumCount)]
+use crate::vm::error::Error;
+
+#[derive(Debug, EnumCount, Clone, Copy)]
 #[repr(usize)]
 pub enum Register {
     // general purpose
@@ -20,4 +22,28 @@ pub enum Register {
     SP,
     PC,
     RRG,
+    FLGS,
+}
+
+// for handling registers referenced in bytes
+impl TryFrom<usize> for Register {
+    type Error = Error;
+
+    fn try_from(value: usize) -> Result<Self, Self::Error> {
+        match value {
+            0 => Ok(Self::G0),
+            1 => Ok(Self::G1),
+            2 => Ok(Self::G2),
+            3 => Ok(Self::G3),
+            4 => Ok(Self::F0),
+            5 => Ok(Self::F1),
+            6 => Ok(Self::F2),
+            7 => Ok(Self::F3),
+            8 => Ok(Self::SP),
+            9 => Ok(Self::PC),
+            10 => Ok(Self::RRG),
+            11 => Ok(Self::FLGS),
+            _ => Err(Error::InvalidRegister),
+        }
+    }
 }

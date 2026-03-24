@@ -5,7 +5,7 @@ use strum::EnumCount as _;
 use strum_macros::EnumCount;
 
 #[repr(u8)]
-#[derive(Debug, Copy, Clone, EnumCount)]
+#[derive(Debug, Copy, Clone, EnumCount, PartialEq)]
 pub enum Opcode {
     PrintReg, // src1: register name
 }
@@ -40,6 +40,7 @@ impl Instruction {
         }
     }
 
+    // TODO: turn this into TryFrom<u32> maybe
     pub fn decoded(packed_inst: u32) -> Result<Self, Error> {
         let opcode = Opcode::try_from(((packed_inst >> 24) & 0xFF) as u8)?;
         let src1 = ((packed_inst >> 16) & 0xFF) as u8;
@@ -63,6 +64,22 @@ impl Instruction {
 
         // return packed as an u32 instruction
         (opcode << 24) | (src1 << 16) | (src2 << 8) | (dest << 0)
+    }
+
+    pub fn get_opcode(&self) -> &Opcode {
+        &self.opcode
+    }
+
+    pub fn get_source1(&self) -> &u8 {
+        &self.src1
+    }
+
+    pub fn get_source2(&self) -> &u8 {
+        &self.src2
+    }
+
+    pub fn get_dest(&self) -> &u8 {
+        &self.dest
     }
 }
 
