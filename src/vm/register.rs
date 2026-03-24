@@ -3,7 +3,7 @@ use strum_macros::EnumCount;
 
 use crate::vm::error::Error;
 
-#[derive(Debug, EnumCount, Clone, Copy)]
+#[derive(Debug, EnumCount, Clone, Copy, PartialEq)]
 #[repr(usize)]
 pub enum Register {
     // general purpose

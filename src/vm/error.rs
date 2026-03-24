@@ -6,4 +6,6 @@ pub enum Error {
     InvalidMemoryAccess,
     OutOfBoundsMemoryAccess,
     InvalidRegister,
+    InvalidOperand,
+    InvalidInstruction,
 }

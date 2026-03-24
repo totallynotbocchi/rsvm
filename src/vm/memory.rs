@@ -56,7 +56,7 @@ impl Default for Stack {
 // ----------- RAM MEMORY -----------
 
 pub struct RAM {
-    data: Vec<u8>,
+    data: Vec<u32>,
     size: usize,
 }
 
@@ -64,10 +64,13 @@ impl RAM {
     const DEFAULT_SIZE: usize = 2 ^ 12;
 
     pub fn new(size: usize) -> Self {
-        Self { data: vec![], size }
+        Self {
+            data: vec![0, size as u32],
+            size,
+        }
     }
 
-    pub fn get_at(&self, addr: usize) -> Result<u8, Error> {
+    pub fn get_at(&self, addr: usize) -> Result<u32, Error> {
         if addr >= self.size {
             return Err(Error::OutOfBoundsMemoryAccess);
         }
@@ -78,7 +81,7 @@ impl RAM {
         }
     }
 
-    pub fn set_at(&mut self, addr: usize, value: u8) -> Result<(), Error> {
+    pub fn set_at(&mut self, addr: usize, value: u32) -> Result<(), Error> {
         if addr >= self.size {
             return Err(Error::OutOfBoundsMemoryAccess);
         }
@@ -92,7 +95,7 @@ impl Default for RAM {
     fn default() -> Self {
         Self {
             size: RAM::DEFAULT_SIZE,
-            data: Vec::default(),
+            data: vec![0; RAM::DEFAULT_SIZE],
         }
     }
 }
