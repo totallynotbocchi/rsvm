@@ -35,7 +35,9 @@ exit
 > [!NOTE]
 > This is **not** ordered.
 
-- [ ] All basic arithmetic operators (add, sub, mul, div)
+- [x] Run basic instructions
+- [x] Implement stack and RAM
+- [x] All basic arithmetic operators (add, sub, mul, div, mod)
 - [ ] Make the arithmetic operators update the flags register
 - [ ] Instructions to convert betweeen float to int registers and back
 - [ ] Basic assembler
@@ -43,3 +45,4 @@ exit
 - [ ] Make a program loop
 - [ ] Add bit operations (rhs, lhs, and, or, xor)
 - [ ] Labels, functions
+- [ ] Make RAM store u8's instead of u32's
