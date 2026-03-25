@@ -11,7 +11,7 @@ A cool 32 bit VM for a custom ISA, written in Rust.
 
 ## Assembly language
 
-> [!warn]
+> [!WARNING]
 > The assembler is currently unfinished.
 
 Concept:
@@ -26,7 +26,7 @@ exit
 ```
 
 # To-Do
-- All basic arithmetic operators (add, sub, mul, div) [ ]
-- Instructions to convert betweeen float to int registers and back [ ]
-- Basic assembler [ ]
-- CLI tool [ ]
+- [ ] All basic arithmetic operators (add, sub, mul, div)
+- [ ] Instructions to convert betweeen float to int registers and back
+- [ ] Basic assembler
+- [ ] CLI tool
