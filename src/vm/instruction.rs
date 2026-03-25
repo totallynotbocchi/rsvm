@@ -11,6 +11,10 @@ pub enum Opcode {
     Put,      // src1: next intermediate, dest: reg to put in
     Mov,      // src1: reg to take from, dest: reg to move in
     Add,      // src1: reg to add, src2: second reg to add, dest: output of operation
+    Sub,      // src1: reg to subtract from, src2: second reg to subtract, dest: output of operation
+    Mul,      // src1: first value, src2: second value, dest: product
+    Div,      // src1: divident, src2: divisor, dest: quotient
+    Mod,      // src1: divident, src2: divisor, dest: remainder
 }
 
 impl TryFrom<u8> for Opcode {
@@ -22,6 +26,10 @@ impl TryFrom<u8> for Opcode {
             1 => Ok(Self::Put),
             2 => Ok(Self::Mov),
             3 => Ok(Self::Add),
+            4 => Ok(Self::Sub),
+            5 => Ok(Self::Mul),
+            6 => Ok(Self::Div),
+            7 => Ok(Self::Mod),
             _ => Err(Error::InvalidOpcode),
         }
     }
@@ -36,11 +44,11 @@ pub enum Operand {
     Register(Register),
 }
 
+// this is ugly, yes, but its probably the cleanest solution
 impl TryFrom<u8> for Operand {
     type Error = Error;
 
     fn try_from(value: u8) -> Result<Self, Self::Error> {
-        // TODO: REFACTOR OF COURSE
         match value {
             0 => Ok(Self::None),
             1 => Ok(Self::Intermediate),

@@ -11,11 +11,11 @@ fn main() {
     let mut cpu = CPU::default();
 
     cpu.ram
-        .set_at(1, 2)
+        .set_at(1, 4)
         .unwrap_or_else(|e| eprintln!("Error: {:?}", e));
 
     cpu.ram
-        .set_at(2, 4)
+        .set_at(2, 2)
         .unwrap_or_else(|e| eprintln!("Error: {:?}", e));
 
     let ins1 = Instruction::new(
@@ -33,7 +33,7 @@ fn main() {
     );
 
     let ins3 = Instruction::new(
-        Opcode::Add,
+        Opcode::Mod,
         Operand::Register(register::Register::G0),
         Operand::Register(register::Register::G1),
         Operand::Register(register::Register::G3),
