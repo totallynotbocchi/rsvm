@@ -38,47 +38,48 @@ impl CPU {
         let dest = inst.get_dest();
 
         // label for supposedly cleaner branches
-        'parsing: {
-            match *inst.get_opcode() {
-                Opcode::PrintReg => {
-                    // print reg must have a register source
-                    if let Operand::Register(reg) = oper1 {
-                        println!("Register {:?}: '{}'", reg, self.get_register(reg));
-                        break 'parsing;
-                    }
-
-                    return Err(Error::InvalidInstruction);
+        match *inst.get_opcode() {
+            Opcode::PrintReg => {
+                // print reg must have a register source
+                if let Operand::Register(reg) = oper1 {
+                    println!("Register {:?}: '{}'", reg, self.get_register(reg));
+                    return Ok(());
                 }
+            }
 
-                Opcode::Put => {
-                    if *oper1 == Operand::Intermediate
-                        && let Operand::Register(out_reg) = *dest
-                    {
-                        let itm = self.ram.get_at(pos + 1)?;
-                        self.set_register(&out_reg, itm);
-
-                        break 'parsing;
-                    }
-
-                    return Err(Error::InvalidInstruction);
+            Opcode::Put => {
+                if *oper1 == Operand::Intermediate
+                    && let Operand::Register(out_reg) = *dest
+                {
+                    let itm = self.ram.get_at(pos + 1)?;
+                    self.set_register(&out_reg, itm);
+                    return Ok(());
                 }
+            }
 
-                Opcode::Mov => {
-                    if let Operand::Register(reg1) = *oper1
-                        && let Operand::Register(out) = *dest
-                    {
-                        let val = self.get_register(&reg1);
-                        self.set_register(&out, val);
-                        break 'parsing;
-                    }
-
-                    return Err(Error::InvalidInstruction);
+            Opcode::Mov => {
+                if let Operand::Register(reg1) = *oper1
+                    && let Operand::Register(out) = *dest
+                {
+                    let val = self.get_register(&reg1);
+                    self.set_register(&out, val);
+                    return Ok(());
                 }
-            };
-        }
+            }
 
-        // always ok cus errors are checked in the branches
-        Ok(())
+            Opcode::Add => {
+                if let Operand::Register(reg1) = *oper1
+                    && let Operand::Register(reg2) = *oper2
+                    && let Operand::Register(out) = *dest
+                {
+                    let sum = self.get_register(&reg1) + self.get_register(&reg2);
+                    self.set_register(&out, sum);
+                    return Ok(());
+                }
+            }
+        };
+
+        return Err(Error::InvalidInstruction);
     }
 }
 

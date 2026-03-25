@@ -10,6 +10,7 @@ pub enum Opcode {
     PrintReg, // src1: register name
     Put,      // src1: next intermediate, dest: reg to put in
     Mov,      // src1: reg to take from, dest: reg to move in
+    Add,      // src1: reg to add, src2: second reg to add, dest: output of operation
 }
 
 impl TryFrom<u8> for Opcode {
@@ -20,6 +21,7 @@ impl TryFrom<u8> for Opcode {
             0 => Ok(Self::PrintReg),
             1 => Ok(Self::Put),
             2 => Ok(Self::Mov),
+            3 => Ok(Self::Add),
             _ => Err(Error::InvalidOpcode),
         }
     }
@@ -103,7 +105,7 @@ impl Instruction {
         }
     }
 
-    // TODO: turn this into TryFrom<u32> maybe
+    // TODO: turn this into TryFrom<u32> maybe?
     pub fn decoded(packed_inst: u32) -> Result<Self, Error> {
         let opcode = Opcode::try_from(((packed_inst >> 24) & 0xFF) as u8)?;
         let src1 = Operand::try_from(((packed_inst >> 16) & 0xFF) as u8)?;
