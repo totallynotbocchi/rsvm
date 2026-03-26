@@ -15,6 +15,7 @@ pub enum Opcode {
     Mul,      // src1: first value, src2: second value, dest: product
     Div,      // src1: divident, src2: divisor, dest: quotient
     Mod,      // src1: divident, src2: divisor, dest: remainder
+    Exit,     // Nothing
 }
 
 impl TryFrom<u8> for Opcode {
@@ -30,6 +31,7 @@ impl TryFrom<u8> for Opcode {
             5 => Ok(Self::Mul),
             6 => Ok(Self::Div),
             7 => Ok(Self::Mod),
+            8 => Ok(Self::Exit),
             _ => Err(Error::InvalidOpcode),
         }
     }

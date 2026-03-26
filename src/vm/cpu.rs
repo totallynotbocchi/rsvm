@@ -11,7 +11,9 @@ pub struct CPU {
     pub registers: [u32; Register::COUNT],
     pub stack: Stack,
     pub ram: RAM,
+
     pos: usize,
+    is_running: bool,
 }
 
 impl CPU {
@@ -30,6 +32,7 @@ impl CPU {
             stack: Stack::new(stack_capacity),
             ram: RAM::new(ram_capacity),
             pos: 0,
+            is_running: false,
         }
     }
 
@@ -54,6 +57,8 @@ impl CPU {
     pub fn is_flag_on(&mut self, flag: u32) -> bool {
         self.registers[Register::FLGS as usize] & flag == 1
     }
+
+    // operations n shit
 
     fn resolve_binary_op(
         &mut self,
@@ -96,7 +101,26 @@ impl CPU {
 
     // main shi
 
-    pub fn execute(&mut self, pos: usize, inst: Instruction) -> Result<(), Error> {
+    pub fn main_loop(&mut self) -> Result<(), Error> {
+        // prepare state
+        self.pos = 0;
+        self.is_running = true;
+
+        // run loop
+        while self.is_running {
+            // get the current instruction
+            let inst = self.ram.get_at(self.pos)?;
+            self.execute(Instruction::decoded(inst)?)?;
+
+            // advance
+            self.pos += 1;
+        }
+
+        println!("Exiting...");
+        Ok(())
+    }
+
+    pub fn execute(&mut self, inst: Instruction) -> Result<(), Error> {
         // for easier referencing in the future
         let oper1 = inst.get_source1();
         let oper2 = inst.get_source2();
@@ -114,12 +138,20 @@ impl CPU {
                 }
             }
 
+            // nothing
+            Opcode::Exit => {
+                self.is_running = false;
+                return Ok(());
+            }
+
             // intermediate-register case
             Opcode::Put => {
                 if *oper1 == Operand::Intermediate
                     && let Operand::Register(out_reg) = *dest
                 {
-                    let itm = self.ram.get_at(pos + 1)?;
+                    self.pos += 1; // move to the next address to grab intermediate
+                    let itm = self.ram.get_at(self.pos)?;
+
                     self.set_register(&out_reg, itm);
                     return Ok(());
                 }
@@ -159,6 +191,7 @@ impl Default for CPU {
             stack: Stack::default(),
             ram: RAM::default(),
             pos: 0,
+            is_running: false,
         }
     }
 }

@@ -44,5 +44,5 @@ exit
 - [ ] CLI tool that loads `.asm` or `.bin`
 - [ ] Make a program loop
 - [ ] Add bit operations (rhs, lhs, and, or, xor)
-- [ ] Labels, functions
+- [ ] Labels, functions, control flow
 - [ ] Make RAM store u8's instead of u32's
