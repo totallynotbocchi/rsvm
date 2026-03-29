@@ -42,7 +42,6 @@ exit
 - [ ] Instructions to convert betweeen float to int registers and back
 - [ ] Basic assembler
 - [ ] CLI tool that loads `.asm` or `.bin`
-- [ ] Make a program loop
+- [x] Make a program loop
 - [ ] Add bit operations (rhs, lhs, and, or, xor)
 - [ ] Labels, functions, control flow
-- [ ] Make RAM store u8's instead of u32's
